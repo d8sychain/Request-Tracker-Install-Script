@@ -10,9 +10,9 @@
   * RT name (used in RT\_SiteConfig.pm)
   * Domain name (used in Apache config and RT\_SiteConfig.pm)
   * Organization name (used in RT\_SiteConfig.pm)
-  * Reverse proxy detection (adds canonicalization config if enabled)
-  * SSL usage (sets WebSecureCookies and WebPort accordingly)
-  * Secure password prompts for MySQL root and RT DB user (non-empty enforced)
+  * Reverse proxy usage (adds canonicalization config to RT if enabled)
+  * SSL usage (sets $WebSecureCookies and $WebPort accordingly)
+  * Secure password prompts for MariaDB (MySQL) root and RT DB user (non-empty enforced)
 * Cleanup of downloaded tarball and extracted source directory post-install
 * Pause for user confirmation after displaying the collected configuration before proceeding
 
@@ -23,6 +23,7 @@
 * Apache site config filename reflects version, e.g., `rt5.conf`, `rt6.conf`
 * Consistent use of variables for all version-dependent file paths and URLs
 * Added root check at start of script before any prompts to avoid wasted input if not run as root
+* Moved code block **# Update RT configuration** above **# Enable RT site and disable default site** and removed the need to restart Apache twice.
 
 ### Notes
 

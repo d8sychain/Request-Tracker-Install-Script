@@ -109,8 +109,8 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
 
 ## Post-Installation Recommendations 
 
-* **Change the default password**
-* **Configure email in RT\_SiteConfig.pm**
+* **Change the default password for the RT user root via the WebUI**
+* **Configure email in RT\_SiteConfig.pm** (e.g. /opt/rt6/etc/RT_SiteConfig.pm)
 * **Enable SSL via reverse proxy or Let's Encrypt**
 * **Open firewall ports if needed**
 

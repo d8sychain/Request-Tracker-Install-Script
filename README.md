@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides a fully automated way to install Request Tracker (RT) 5 or 6 on a Debian-based system using an enhanced Bash script. The script interacts with the user to collect configuration options, installs required dependencies, sets up MySQL, configures Apache, and initializes RT.
+This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a Debian-based system using an enhanced Bash script. The script interacts with the user to collect configuration options, installs required dependencies, sets up MySQL, configures Apache, and initializes RT.
 
 ## Changelog (Compared to the Original Guide)
 

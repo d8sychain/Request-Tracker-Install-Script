@@ -4,7 +4,7 @@
 
 This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a Debian-based system using an enhanced Bash script. The script interacts with the user to collect configuration options, installs required dependencies, sets up MariaDB, configures Apache, and initializes RT.
 
-## Changelog (Compared to the Original Guide)
+## Changelog (Compared to the Original Script)
 
 * **Interactive Prompts**: Script now asks the user for:
 
@@ -39,7 +39,14 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
 
 ## Instructions
 
-1. Download the script using either **wget** or **curl**:
+1. Login to your Linux distro locally or via SSH
+
+2. Move to the **tmp** directory (optional)
+
+   ```bash
+   cd /tmp
+   ```
+3. Download the script using either **wget** or **curl**:
 
    **Using wget:**
    ```bash
@@ -51,19 +58,19 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
    curl -O https://raw.githubusercontent.com/d8sychain/Request-Tracker-Install-Script/main/install_rt.sh
    ```
 
-2. Make the script executable:
+4. Make the script executable:
 
    ```bash
    chmod +x install_rt.sh
    ```
 
-3. Run the script with root privileges:
+5. Run the script with root privileges:
 
    ```bash
    sudo ./install_rt.sh
    ```
 
-4. Follow the prompts:
+6. Follow the prompts:
 
    * Enter desired RT version (e.g., 5.0.8, 6.0.0)
    * Enter RT Name (used for branding and directory structure)
@@ -73,7 +80,7 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
    * Provide MariaDB root password
    * Set RT MariaDB database and user passwords
 
-5. Wait for the script to complete. It will:
+7. As the script runs it will:
 
    * Download and unpack RT
    * Install all OS and Perl dependencies
@@ -81,7 +88,21 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
    * Generate Apache configuration
    * Clean up temporary files
 
-6. Access the RT interface via browser:
+8. There will be several prompts while installing all OS and Perl dependencies:
+
+     *You can just press Enter at each of the following prompts since the default is what you want.*
+   * Would you like to configure as much as possible automatically? [yes] –> Response = yes
+   * *Note: Don’t be concerned about seeing the MISSING messages. The script will rectify this at a later stage.*
+   * Continue anyways? [y] –> Response = y
+   * Check for a new version of the Public Suffix List? [N] –> Response = N
+   * Do you want to run external tests? These tests *will* *fail* if you do not have network connectivity. [n] –> Response = n
+   * These tests will detect if there are network problems and fail soft, so please disable them only if you definitely don’t want to have any network traffic to external sites. [Y/n] –> Response = Y
+   * Do you want to build the XS Stash module? [y] –> Response = y
+   * Do you want to use the XS Stash by default? [y] –> Response = y
+
+9. At the last prompt, enter the MySQL root password that you entered earlier.
+
+10. Access the RT interface via browser:
 
    * URL: `http(s)://<your domain>` or `http://<server IP>`
    * Default login: `root / password`
@@ -92,6 +113,11 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
 * **Configure email in RT\_SiteConfig.pm**
 * **Enable SSL via reverse proxy or Let's Encrypt**
 * **Open firewall ports if needed**
+
+## Resources
+* Request Tracker latest documentation: https://docs.bestpractical.com/rt/latest
+* Install guide for Ubuntu Server 18 (should be similar to the latest version 24): https://ubuntu.com/tutorials/install-ubuntu-server
+* Download the latest Ubuntu Server: https://ubuntu.com/download/server
 
 ## Support & Attribution
 

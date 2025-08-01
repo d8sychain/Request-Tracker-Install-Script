@@ -154,7 +154,7 @@ sleep 5
 make install
 
 # Initialize RT database
-echo "----->Initializing RT5 database...<-----"
+echo "----->Initializing RT database...<-----"
 sleep 5
 cd "${RT_TMP_DIR}"
 make initialize-database
@@ -174,6 +174,7 @@ else
 fi
 
 # Configure Apache
+echo "----->Configuring Apache<-----"
 cat > /etc/apache2/sites-available/${APACHE_CONF} <<EOF
 <VirtualHost *:80>
     ServerName ${WEB_DOMAIN}
@@ -224,7 +225,7 @@ systemctl restart apache2
 rm -rf "$RT_TMP_DIR"
 rm -f "/tmp/${RT_TARBALL}"
 
-echo "Temporary installation files removed."
+echo "----->Temporary installation files removed.<-----"
 
 # Final instructions
 echo "----->Installation complete!<-----"

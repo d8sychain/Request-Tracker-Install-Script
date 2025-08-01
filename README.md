@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a Debian-based system using an enhanced Bash script. The script interacts with the user to collect configuration options, installs required dependencies, sets up MySQL, configures Apache, and initializes RT.
+This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a Debian-based system using an enhanced Bash script. The script interacts with the user to collect configuration options, installs required dependencies, sets up MariaDB, configures Apache, and initializes RT.
 
 ## Changelog (Compared to the Original Guide)
 
@@ -13,7 +13,7 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
   * Domain name
   * Organization
   * Reverse proxy and SSL status
-  * MySQL root and RT DB user passwords
+  * MariaDB root and RT DB user passwords
 
 * **Conditional RT Configuration**:
 
@@ -70,8 +70,8 @@ This guide and script provide a way to install Request Tracker (RT) 5 or 6 on a 
    * Supply domain name and organization
    * Indicate if you're behind a reverse proxy
    * Indicate if you're using SSL
-   * Provide MySQL root password
-   * Set RT MySQL database and user passwords
+   * Provide MariaDB root password
+   * Set RT MariaDB database and user passwords
 
 5. Wait for the script to complete. It will:
 

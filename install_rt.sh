@@ -22,10 +22,10 @@ WEB_GROUP="www-data"
 
 # Prompt for RT version
 while true; do
-  read -p "Enter RT version to install [default: 5.0.7]: " RT_VERSION
-  RT_VERSION=${RT_VERSION:-5.0.7}
+  read -p "Enter RT version to install [default: 6.0.0]: " RT_VERSION
+  RT_VERSION=${RT_VERSION:-6.0.0}
 
-  # Validate format (e.g., 6.1.5)
+  # Validate format (e.g., 6.0.0)
   if [[ ! "$RT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "Invalid version format. Use format like 5.0.7 or 6.1.5."
     continue

@@ -29,6 +29,8 @@
   - Improved success/failure reporting when creating the RT DB user
 - **Output Readability**
   - Changed formatting of prompts and summaries for improved UX
+- **Adjustable Sleep Time**
+- Changed hard-coded "sleep 5" lines to use the variable "$SLEEP_TIME", making this easier to adjust
 
 
 ## \[2025-08-01] - Enhanced Installer & Added RT 5.x/6.x Support

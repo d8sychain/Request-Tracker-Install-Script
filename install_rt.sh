@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Installation script for Request Tracker 5.x.x and 6.x.x
+# Installation script for Request Tracker 5.x.x and 6.x.x (may also install older than 5, untested)
 # Run this script as root (e.g., sudo ./install_rt.sh)
 # Original script by HendGrow - https://hendgrow.com/ugs/hendgrow_auto_install_rt5.sh
 
@@ -14,6 +14,7 @@ exec 3>&1 4>&2
 LOG_FILE="/var/log/rt_install.log"
 START_TIME=$(date +%s)
 exec > >(tee -a "$LOG_FILE") 2>&1
+SLEEP_TIME=5
 
 # ===== Print Message If The Script Fails =====
 trap 'ret=$?; if [ $ret -ne 0 ]; then echo "Script failed. The log for this script can be found at $LOG_FILE"; fi' EXIT
@@ -28,6 +29,7 @@ done
 
 # ===== Start of Installation log =====
 echo "[INFO] ($(date)) The script has started"
+sleep $SLEEP_TIME
 
 # ===== Root Privilege Check =====
 if [ "$EUID" -ne 0 ]; then
@@ -70,6 +72,7 @@ while (( attempt <= MAX_RETRIES )); do
       exit 1
     fi
     echo "[INFO] ($(date)) Using latest RT version: $RT_VERSION"
+    sleep $SLEEP_TIME
   fi
 
   # ===== Validate Version Format (x.y.z) =====
@@ -88,8 +91,10 @@ while (( attempt <= MAX_RETRIES )); do
 
   # ===== Check if RT_VERSION Is Available / Valid =====
   echo "[INFO] ($(date)) Checking if version $RT_VERSION is available..."
+  sleep $SLEEP_TIME
   if curl --head --silent --fail "$RT_URL" > /dev/null; then
     echo "[INFO] ($(date)) RT version $RT_VERSION is available."
+    sleep $SLEEP_TIME
     break
   else
     echo "[ERROR] ($(date)) RT version $RT_VERSION not found at $RT_URL."
@@ -160,6 +165,7 @@ read
 
 # ===== Install Required Packages =====
 echo "[INFO] ($(date)) Updating package list and installing dependencies..."
+sleep $SLEEP_TIME
 apt update
 apt install -y build-essential apache2 \
   libapache2-mod-fcgid mariadb-server mariadb-client \
@@ -169,10 +175,12 @@ apt install -y build-essential apache2 \
 
 # ===== Enable Required Apache Modules =====
 echo "[INFO] ($(date)) Enabling Apache modules..."
+sleep $SLEEP_TIME
 a2enmod fcgid rewrite
 
 # ===== Download and Extract RT Source =====
 echo "[INFO] ($(date)) Downloading Request Tracker ${RT_VERSION}..."
+sleep $SLEEP_TIME
 wget -O "/tmp/${RT_TARBALL}" "${RT_URL}"
 chown root "/tmp/${RT_TARBALL}"
 set +e  # Disable immediate exit
@@ -187,6 +195,7 @@ cd "${RT_TMP_DIR}"
 
 # ===== Install Required Perl Modules =====
 echo "[INFO] ($(date)) Configuring CPAN and installing Perl dependencies..."
+sleep $SLEEP_TIME
 cpan App::cpanminus
 ./configure --with-web-user="${WEB_USER}" --with-web-group="${WEB_GROUP}"
 make testdeps || true
@@ -195,15 +204,18 @@ make fixdeps
 
 # ===== Compile and Install RT =====
 echo "[INFO] ($(date)) Installing RT ${RT_VERSION}..."
+sleep $SLEEP_TIME
 make install
 
 # ===== Initialize RT Database =====
 echo "[INFO] ($(date)) Initializing RT database..."
+sleep $SLEEP_TIME
 cd "${RT_TMP_DIR}"
 make initialize-database
 
 # ===== Create MySQL User and Grant Access =====
 echo "[INFO] ($(date)) Creating RT database user and granting privileges..."
+sleep $SLEEP_TIME
 mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "
   ALTER USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
   GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
@@ -211,12 +223,14 @@ mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "
 
 if [ $? -eq 0 ]; then
   echo "[INFO] ($(date)) Database user $DB_USER created successfully."
+  sleep $SLEEP_TIME
 else
   echo "[ERROR] ($(date)) Failed to create database user."
 fi
 
 # ===== Configure Apache VirtualHost =====
 echo "[INFO] ($(date)) Configuring Apache site..."
+sleep $SLEEP_TIME
 cat > /etc/apache2/sites-available/${APACHE_CONF} <<EOF
 <VirtualHost *:80>
     ServerName ${WEB_DOMAIN}
@@ -236,6 +250,7 @@ EOF
 
 # ===== Append Custom RT Site Settings =====
 echo "[INFO] ($(date)) Updating RT site configuration..."
+sleep $SLEEP_TIME
 cat >> "${RT_DIR}/etc/RT_SiteConfig.pm" <<EOF
 Set( \$rtname, '${RT_NAME}' );
 Set( \$Organization, '${ORG_NAME}' );
@@ -252,12 +267,14 @@ EOF
 
 # ===== Activate Apache Site and Restart Service =====
 echo "[INFO] ($(date)) Enabling Apache site and restarting server..."
+sleep $SLEEP_TIME
 a2ensite ${APACHE_CONF}
 a2dissite 000-default
 systemctl restart apache2
 
 # ===== Remove Temporary Files =====
 echo "[INFO] ($(date)) Cleaning up temporary files..."
+sleep $SLEEP_TIME
 rm -rf "$RT_TMP_DIR"
 rm -f "/tmp/${RT_TARBALL}"
 
